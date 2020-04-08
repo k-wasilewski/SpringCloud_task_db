@@ -24,6 +24,11 @@ public class TaskDbApplication {
         return new TaskConfigurer(dataSource);
     }
 
+    @Bean
+    public TaskListener taskListener() {
+        return new TaskListener();
+    }
+
     @Component
     public static class TaskDbApplicationRunner
             implements ApplicationRunner {
