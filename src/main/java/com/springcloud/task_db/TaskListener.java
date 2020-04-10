@@ -12,12 +12,28 @@ import javax.sql.DataSource;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class TaskListener implements TaskExecutionListener {
     @Autowired
     private BookMessageRepository bookMessageRepository;
+    Logger logger = Logger.getLogger("logger");
+    FileHandler fh;
 
     public void onTaskStartup(TaskExecution te) {
+        try {
+            fh = new FileHandler("/home/kuba/Pulpit/projekty/SpringCloud/task_db.log");
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         List<BookMessage> bookMessageList = bookMessageRepository.findAll();
         FileWriter writer = null;
         try {
@@ -26,17 +42,18 @@ public class TaskListener implements TaskExecutionListener {
                 writer.write(bm + System.lineSeparator());
             }
             writer.close();
+            logger.info("History successfully written to file");
         } catch (IOException ioe) {
-            System.out.println("Cannot write to file");
+            logger.info("IOException: cannot write to file");
         }
     }
 
     public void onTaskEnd(TaskExecution te) {
-        System.out.println("Task end");
+        logger.info("task end");
     }
 
     public void onTaskFailed(TaskExecution te, Throwable t) {
-        System.out.println("Task failed");
+        logger.info("task failed");
     }
 
 }
