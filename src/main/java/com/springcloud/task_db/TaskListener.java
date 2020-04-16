@@ -24,7 +24,7 @@ public class TaskListener implements TaskExecutionListener {
 
     public void onTaskStartup(TaskExecution te) {
         try {
-            fh = new FileHandler("/home/kuba/Pulpit/projekty/SpringCloud/task_db.log");
+            fh = new FileHandler("/home/kuba/Desktop/projects/SpringCloud/task_db.log");
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
@@ -37,7 +37,7 @@ public class TaskListener implements TaskExecutionListener {
         List<BookMessage> bookMessageList = bookMessageRepository.findAll();
         FileWriter writer = null;
         try {
-             writer = new FileWriter("/home/kuba/Pulpit/projekty/SpringCloud/book-service_history.txt");
+             writer = new FileWriter("/home/kuba/Desktop/projects/SpringCloud/book-service_history.txt");
             for(BookMessage bm: bookMessageList) {
                 writer.write(bm + System.lineSeparator());
             }
